@@ -9,6 +9,14 @@
     <link rel="stylesheet" href="/styles/tokens.css">
     <link rel="stylesheet" href="/styles/page.css">
 
+    <script type="importmap">
+      {
+        "imports": {
+          "@unbnd/html": "https://unpkg.com/@unbnd/html"
+        }
+      }
+      </script>
+
     <label class="mode-toggle" id="mode-toggle">
       <input type="checkbox" id="dark-mode-input" autocomplete="off">
       Dark mode
@@ -21,7 +29,14 @@
     <h2>Exercises</h2>
     <ul>
       <li>
-        <a href="exercise1.html">Push-up</a>
+        <fit-exercise-link
+          href="exercise1.html"
+          muscle-group="Chest"
+          sets="3"
+          reps="12"
+        >
+          Push-up
+        </fit-exercise-link>
       </li>
     </ul>
 
@@ -32,5 +47,14 @@
       <a href="user1.html">Back to User</a>
     </p>
     <script src="/scripts/darkmode.js"></script>
+
+    <script type="module">
+      import { define } from "@unbnd/html";
+      import { ExerciseLinkElement } from "/js/exercise-link.js";
+
+      define({
+        "fit-exercise-link": ExerciseLinkElement
+      });
+    </script>
   </body>
 </html>
