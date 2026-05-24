@@ -5,3 +5,11 @@
   --color-header-text: #ffffff;
   --color-link: #0077cc;
 }
+
+body.dark-mode {
+  --color-background-page: #111111;
+  --color-text: #f2f2f2;
+  --color-header-bg: #1e1e1e;
+  --color-header-text: #ffffff;
+  --color-link: #8ec5ff;
+}

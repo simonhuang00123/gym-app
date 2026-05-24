@@ -18,3 +18,9 @@ a {
 ul {
   margin-bottom: 20px;
 }
+
+.icon {
+  width: 10em;
+  height: 10em;
+  fill: currentColor;
+}
