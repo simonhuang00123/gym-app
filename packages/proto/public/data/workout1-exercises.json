@@ -1,0 +1,11 @@
+{
+  "exercises": [
+    {
+      "name": "Push-up",
+      "href": "exercise1.html",
+      "muscleGroup": "Chest",
+      "sets": "3",
+      "reps": "12"
+    }
+  ]
+}

@@ -10,12 +10,12 @@
     <link rel="stylesheet" href="/styles/page.css">
 
     <script type="importmap">
-      {
-        "imports": {
-          "@unbnd/html": "https://unpkg.com/@unbnd/html"
-        }
+    {
+      "imports": {
+        "@unbndl/html": "https://unpkg.com/@unbndl/html"
       }
-      </script>
+    }
+    </script>
 
     <label class="mode-toggle" id="mode-toggle">
       <input type="checkbox" id="dark-mode-input" autocomplete="off">
@@ -49,12 +49,17 @@
     <script src="/scripts/darkmode.js"></script>
 
     <script type="module">
-      import { define } from "@unbnd/html";
+      import { define } from "@unbndl/html";
       import { ExerciseLinkElement } from "/js/exercise-link.js";
+      import { ExerciseListElement } from "/js/exercise-list.js";
 
       define({
-        "fit-exercise-link": ExerciseLinkElement
+        "fit-exercise-link": ExerciseLinkElement,
+        "fit-exercise-list": ExerciseListElement
       });
+
+      console.log("module loaded");
+      console.log(customElements.get("fit-exercise-link"));
     </script>
   </body>
 </html>
