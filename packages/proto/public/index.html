@@ -9,20 +9,48 @@
     <link rel="stylesheet" href="/styles/tokens.css">
     <link rel="stylesheet" href="/styles/page.css">
 
-    <label class="mode-toggle" id="mode-toggle">
-      <input type="checkbox" id="dark-mode-input" autocomplete="off">
-      Dark mode
-    </label>
+    <script type="importmap">
+      {
+        "imports": {
+          "@unbndl/auth": "https://unpkg.com/@unbndl/auth",
+          "@unbndl/html": "https://unpkg.com/@unbndl/html",
+          "@unbndl/view": "https://unpkg.com/@unbndl/view"
+        }
+      }
+    </script>
+
+    <script type="module">
+      import { define } from "@unbndl/html";
+      import { Auth } from "@unbndl/auth";
+      import { HeaderElement } from "/js/header.js";
+
+      define({
+        "auth-provider": Auth.Provider,
+        "fit-header": HeaderElement
+      });
+    </script>
   </head>
 
   <body>
-    <h1>Fitness App</h1>
+    <auth-provider>
+      <label class="mode-toggle" id="mode-toggle">
+        <input type="checkbox" id="dark-mode-input" autocomplete="off">
+        Dark mode
+      </label>
 
-    <ul>
-      <li>
-        <a href="user1.html">User: John</a>
-      </li>
-    </ul>
+      <fit-header></fit-header>
+
+      <main>
+        <h1>Fitness App</h1>
+
+        <ul>
+          <li>
+            <a href="user1.html">User: John</a>
+          </li>
+        </ul>
+      </main>
+    </auth-provider>
+
     <script src="/scripts/darkmode.js"></script>
   </body>
 </html>

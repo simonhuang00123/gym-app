@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html>
-  <head lang="en">
+<html lang="en">
+  <head>
     <meta charset="UTF-8">
     <title>Exercise - Fitness App</title>
 
@@ -9,20 +9,46 @@
     <link rel="stylesheet" href="/styles/tokens.css">
     <link rel="stylesheet" href="/styles/page.css">
 
-    <label class="mode-toggle" id="mode-toggle">
-      <input type="checkbox" id="dark-mode-input" autocomplete="off">
-      Dark mode
-    </label>
+    <script type="importmap">
+    {
+      "imports": {
+        "@unbndl/auth": "https://unpkg.com/@unbndl/auth",
+        "@unbndl/html": "https://unpkg.com/@unbndl/html",
+        "@unbndl/view": "https://unpkg.com/@unbndl/view"
+      }
+    }
+    </script>
+
+    <script type="module">
+      import { define } from "@unbndl/html";
+      import { Auth } from "@unbndl/auth";
+      import { HeaderElement } from "/js/header.js";
+
+      define({
+        "auth-provider": Auth.Provider,
+        "fit-header": HeaderElement
+      });
+    </script>
   </head>
 
   <body>
-    <h1>Exercise: Push-up</h1>
+    <auth-provider>
+      <label class="mode-toggle" id="mode-toggle">
+        <input type="checkbox" id="dark-mode-input" autocomplete="off">
+        Dark mode
+      </label>
 
-    <p>Targets: Chest, Arms</p>
+      <fit-header></fit-header>
 
-    <p>
+      <h1>Exercise: Push-up</h1>
+
+      <p>Targets: Chest, Arms</p>
+
+      <p>
         <a href="workout1.html">Used in Plan</a>
-    </p>
+      </p>
+    </auth-provider>
+
     <script src="/scripts/darkmode.js"></script>
   </body>
 </html>

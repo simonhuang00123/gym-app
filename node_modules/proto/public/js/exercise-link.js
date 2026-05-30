@@ -1,4 +1,4 @@
-import { html, css, shadow } from "@unbnd/html";
+import { html, css, shadow } from "@unbndl/html";
 
 export class ExerciseLinkElement extends HTMLElement {
   static template = html`
@@ -21,37 +21,43 @@ export class ExerciseLinkElement extends HTMLElement {
       .styles(ExerciseLinkElement.styles);
   }
 
+  connectedCallback() {
+    this.updateContent();
+  }
+
   static observedAttributes = ["href", "muscle-group", "sets", "reps"];
 
-  attributeChangedCallback(name, oldValue, newValue) {
+  attributeChangedCallback() {
+    this.updateContent();
+  }
+
+  updateContent() {
     if (!this.shadowRoot) return;
 
-    if (name === "href") {
-      const link = this.shadowRoot.querySelector(".exercise-link");
-      if (link) {
-        link.setAttribute("href", newValue ?? "");
-      }
+    const link = this.shadowRoot.querySelector(".exercise-link");
+    const muscleGroup = this.shadowRoot.querySelector(".muscle-group");
+    const sets = this.shadowRoot.querySelector(".sets");
+    const reps = this.shadowRoot.querySelector(".reps");
+
+    const href = this.getAttribute("href") || "";
+    const muscle = this.getAttribute("muscle-group") || "";
+    const setsValue = this.getAttribute("sets") || "";
+    const repsValue = this.getAttribute("reps") || "";
+
+    if (link) {
+      link.setAttribute("href", href);
     }
 
-    if (name === "muscle-group") {
-      const muscleGroup = this.shadowRoot.querySelector(".muscle-group");
-      if (muscleGroup) {
-        muscleGroup.textContent = newValue ? `Muscle group: ${newValue}` : "";
-      }
+    if (muscleGroup) {
+      muscleGroup.textContent = muscle ? `Muscle group: ${muscle}` : "";
     }
 
-    if (name === "sets") {
-      const sets = this.shadowRoot.querySelector(".sets");
-      if (sets) {
-        sets.textContent = newValue ? ` Sets: ${newValue}` : "";
-      }
+    if (sets) {
+      sets.textContent = setsValue ? ` Sets: ${setsValue}` : "";
     }
 
-    if (name === "reps") {
-      const reps = this.shadowRoot.querySelector(".reps");
-      if (reps) {
-        reps.textContent = newValue ? ` Reps: ${newValue}` : "";
-      }
+    if (reps) {
+      reps.textContent = repsValue ? ` Reps: ${repsValue}` : "";
     }
   }
 

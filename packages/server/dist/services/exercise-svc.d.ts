@@ -1,0 +1,14 @@
+import type { Exercise } from "../models/index.js";
+declare function index(): Promise<Exercise[]>;
+declare function get(id: string): Promise<Exercise | undefined>;
+declare function create(json: Exercise): Promise<Exercise>;
+declare function update(id: string, exercise: Exercise): Promise<Exercise | undefined>;
+declare function remove(id: string): Promise<void>;
+declare const _default: {
+    index: typeof index;
+    get: typeof get;
+    create: typeof create;
+    update: typeof update;
+    remove: typeof remove;
+};
+export default _default;

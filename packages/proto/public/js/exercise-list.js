@@ -1,51 +1,44 @@
-import { html, css, shadow } from "@unbndl/html";
-
-function renderExercise(exercise) {
-  const { name, href, muscleGroup, sets, reps } = exercise;
-
-  return html`
-    <li>
-      <fit-exercise-link
-        href="${href}"
-        muscle-group="${muscleGroup}"
-        sets="${sets}"
-        reps="${reps}"
-      >
-        ${name}
-      </fit-exercise-link>
-    </li>
-  `;
-}
+import { css, shadow } from "@unbndl/html";
+import { createViewModel } from "@unbndl/view";
+import { fromAuth } from "@unbndl/auth";
 
 export class ExerciseListElement extends HTMLElement {
+  viewModel = createViewModel({
+    authenticated: false,
+    token: undefined
+  }).with(fromAuth(this), "authenticated", "token");
+
   constructor() {
     super();
     shadow(this).styles(ExerciseListElement.styles);
   }
 
   connectedCallback() {
-    const src = this.getAttribute("src");
-    if (src) {
-      this.hydrate(src).then((data) => {
-        const view = ExerciseListElement.render(data);
-        shadow(this).replace(view);
-      });
-    }
+    this.viewModel.createEffect(($) => {
+      const src = this.getAttribute("src");
+
+      if ($.authenticated && $.token && src) {
+        this.hydrate(src).then((data) => {
+          this.renderList(data);
+        });
+      }
+    });
   }
 
-  static observedAttributes = ["src"];
+  get authorization() {
+    const $ = this.viewModel.toObject();
 
-  attributeChangedCallback(name, oldValue, newValue) {
-    if (name === "src" && newValue) {
-      this.hydrate(newValue).then((data) => {
-        const view = ExerciseListElement.render(data);
-        shadow(this).replace(view);
-      });
+    if ($.authenticated && $.token) {
+      return {
+        Authorization: `Bearer ${$.token}`
+      };
     }
+
+    return {};
   }
 
   hydrate(src) {
-    return fetch(src)
+    return fetch(src, { headers: this.authorization })
       .then((response) => {
         if (response.status !== 200) {
           throw `HTTP Status ${response.status}`;
@@ -54,15 +47,30 @@ export class ExerciseListElement extends HTMLElement {
       })
       .catch((error) => {
         console.log(`Could not fetch ${src}:`, error);
+        return [];
       });
   }
 
-  static render(data) {
-    const exercises = data?.exercises || [];
+  renderList(data) {
+    const exercises = Array.isArray(data) ? data : data?.exercises || [];
 
-    return html`
+    const items = exercises.map((exercise) => {
+      const { name, href, muscleGroup, sets, reps } = exercise;
+
+      return `
+        <li>
+          <a href="${href}">${name}</a>
+          <span> - ${muscleGroup}, ${sets} sets, ${reps} reps</span>
+        </li>
+      `;
+    }).join("");
+
+    this.shadowRoot.innerHTML = `
+      <style>
+        ${ExerciseListElement.styles.toString()}
+      </style>
       <ul>
-        ${exercises.map(renderExercise)}
+        ${items}
       </ul>
     `;
   }
@@ -74,6 +82,10 @@ export class ExerciseListElement extends HTMLElement {
 
     ul {
       padding-left: 1.25rem;
+    }
+
+    li {
+      margin-bottom: 0.5rem;
     }
   `;
 }

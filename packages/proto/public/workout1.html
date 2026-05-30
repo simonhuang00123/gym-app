@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html>
-  <head lang="en">
+<html lang="en">
+  <head>
     <meta charset="UTF-8">
     <title>Workout - Fitness App</title>
 
@@ -12,54 +12,52 @@
     <script type="importmap">
     {
       "imports": {
-        "@unbndl/html": "https://unpkg.com/@unbndl/html"
+        "@unbndl/auth": "https://unpkg.com/@unbndl/auth",
+        "@unbndl/html": "https://unpkg.com/@unbndl/html",
+        "@unbndl/view": "https://unpkg.com/@unbndl/view"
       }
     }
     </script>
 
-    <label class="mode-toggle" id="mode-toggle">
-      <input type="checkbox" id="dark-mode-input" autocomplete="off">
-      Dark mode
-    </label>
-  </head>
-
-  <body>
-    <h1>Workout: Upper Body Day</h1>
-    <svg class="icon"><use href="/icons/fitness.svg#icon-dumbbell"></use></svg>
-    <h2>Exercises</h2>
-    <ul>
-      <li>
-        <fit-exercise-link
-          href="exercise1.html"
-          muscle-group="Chest"
-          sets="3"
-          reps="12"
-        >
-          Push-up
-        </fit-exercise-link>
-      </li>
-    </ul>
-
-    <p>
-      <a href="plan1.html">Part of Plan</a>
-    </p>
-    <p>
-      <a href="user1.html">Back to User</a>
-    </p>
-    <script src="/scripts/darkmode.js"></script>
-
     <script type="module">
       import { define } from "@unbndl/html";
+      import { Auth } from "@unbndl/auth";
+      import { HeaderElement } from "/js/header.js";
       import { ExerciseLinkElement } from "/js/exercise-link.js";
       import { ExerciseListElement } from "/js/exercise-list.js";
 
       define({
+        "auth-provider": Auth.Provider,
+        "fit-header": HeaderElement,
         "fit-exercise-link": ExerciseLinkElement,
         "fit-exercise-list": ExerciseListElement
       });
-
-      console.log("module loaded");
-      console.log(customElements.get("fit-exercise-link"));
     </script>
+  </head>
+
+  <body>
+    <auth-provider>
+      <label class="mode-toggle" id="mode-toggle">
+        <input type="checkbox" id="dark-mode-input" autocomplete="off">
+        Dark mode
+      </label>
+
+      <fit-header></fit-header>
+
+      <h1>Workout: Upper Body Day</h1>
+      <svg class="icon"><use href="/icons/fitness.svg#icon-dumbbell"></use></svg>
+      <h2>Exercises</h2>
+
+      <fit-exercise-list src="/api/exercises"></fit-exercise-list>
+
+      <p>
+        <a href="plan1.html">Part of Plan</a>
+      </p>
+      <p>
+        <a href="user1.html">Back to User</a>
+      </p>
+    </auth-provider>
+
+    <script src="/scripts/darkmode.js"></script>
   </body>
 </html>
